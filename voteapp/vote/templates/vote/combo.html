@@ -1,0 +1,186 @@
+
+{% extends "base-back.html"%}
+{% block content %}
+
+
+  <!-- HEADER -->
+  <header id="main-header" class="py-2 bg-primary text-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h1>
+            <i class="fas fa-cog"></i>Vote</h1>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ACTIONS -->
+  <section id="actions" class="py-4 mb-4 bg-light">
+    <div class="container">
+            <form action="{{url_for('vote.vote')}}" method = 'POST'>
+              <div class="mb-3 row">
+                <div class="col-md-10">
+                  {# This hidden_tag is a CSRF security feature. #}
+                  {{ form.hidden_tag() }}
+                  {{ form.show(class='dropdown-content hide') }}
+            <!-- {{ form.submit() }} -->
+              <div class="row">
+                <div class="col-md-3">
+                  <input class="btn btn-primary btn-block mt-3" type="submit" value="Vote Now">
+                </div>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section id="results">
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+              <h4>Top Recommendations</h4>
+            </div>
+            <table class="table table-sm table-striped table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Show Name</th>
+                  <th>Votes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%for item in results %}
+                  <tr>
+                    <td>{{item[0]}}</td>
+                    <td>{{item[1]}}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <br>
+          <!-- CARD WITH IMAGE style="width: 20rem;  300x200 is the image size-->
+          {% if rating >= 100 %}
+            {% set number = 21 %}
+            {% set description = 'bio/bio-21.html' %}
+          {% elif rating >= 95 %}
+            {% set number = 20 %}
+            {% set description = 'bio/bio-20.html' %}
+          {% elif rating >= 90 %}
+            {% set number = 19 %}
+            {% set description = 'bio/bio-19.html' %}
+          {% elif rating >= 85 %}
+            {% set number = 18 %}
+            {% set description = 'bio/bio-18.html' %}
+          {% elif rating >= 80 %}
+            {% set number = 17 %}
+            {% set description = 'bio/bio-17.html' %}
+          {% elif rating >= 75 %}
+            {% set number = 16 %}
+            {% set description = 'bio/bio-16.html' %}
+          {% elif rating >= 70 %}
+            {% set number = 15 %}
+            {% set description = 'bio/bio-15.html' %}
+          {% elif rating >= 65 %}
+            {% set number = 14 %}
+            {% set description = 'bio/bio-14.html' %}
+          {% elif rating >= 60 %}
+            {% set number = 13 %}
+            {% set description = 'bio/bio-13.html' %}
+          {% elif rating >= 55 %}
+            {% set number = 12 %}
+            {% set description = 'bio/bio-12.html' %}
+          {% elif rating >= 50 %}
+            {% set number = 11 %}
+            {% set description = 'bio/bio-11.html' %}
+          {% elif rating >= 45 %}
+            {% set number = 10 %}
+            {% set description = 'bio/bio-10.html' %}
+          {% elif rating >= 40 %}
+            {% set number = 9 %}
+            {% set description = 'bio/bio-9.html' %}
+          {% elif rating >= 35 %}
+            {% set number = 8 %}
+            {% set description = 'bio/bio-8.html' %}
+          {% elif rating >= 30 %}
+            {% set number = 7 %}
+            {% set description = 'bio/bio-7.html' %}
+          {% elif rating >= 25 %}
+            {% set number = 6 %}
+            {% set description = 'bio/bio-6.html' %}
+          {% elif rating >= 20 %}
+            {% set number = 5 %}
+            {% set description = 'bio/bio-5.html' %}
+          {% elif rating >= 15 %}
+            {% set number = 4 %}
+            {% set description = 'bio/bio-4.html' %}
+          {% elif rating >= 10 %}
+            {% set number = 3 %}
+            {% set description = 'bio/bio-3.html' %}
+          {% elif rating >= 5 %}
+            {% set number = 2 %}
+            {% set description = 'bio/bio-2.html' %}
+          {% else %}
+            {% set number = 1 %}
+            {% set description = 'bio/bio-1.html' %}
+          {% endif %}
+
+          <div class="card bg-dark text-white">
+              <img class="card-img-top"src="/static/img/music-{{number}}.jpg" alt="">
+              <div class="card-body text-center">
+                  <h4 class="card-title">Music Appreciation Rating</h4>
+                  <p class="card-text display-4">{{rating}}/100</p>
+                  <p>{% include [description] %}</p>
+              </div>
+          </div>
+          <!-- CARD WITH IMAGE -->
+
+
+        </div> <!-- end col-->
+
+        <!-- Card in sidebar 1/4-->
+        <div class="col-md-8">
+
+
+          <!-- Start graph-->
+          <div class="wrapper p-3" style="border:1px solid #000000">
+            <h1 class="display-4">Vote Distribution</h1>
+            <canvas id="pie-chart" width="800" height="450"></canvas>
+          </div>
+
+          <script type="text/javascript">
+            new Chart(document.getElementById("pie-chart"), {
+                type: 'pie',
+                data: {
+                  labels: {{label|safe}},
+                  datasets: [{
+                    label: "Vote Distribution",
+                    backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#f4d03f","#000066"],
+                    data: {{data}}
+                  }]
+                },
+                options: {
+                  title: {
+                    display: true,
+                    text: 'Vote Distribution'
+                  }
+                }
+            });
+          </script>
+
+
+
+        </div> <!-- End col-->
+      </div>
+    </div>
+  </section>
+
+
+  {% endblock %}
