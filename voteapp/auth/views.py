@@ -22,7 +22,7 @@ auth_blueprint = Blueprint('auth',
 @login_required
 def logout():
     logout_user()
-    #flash('Logged out!')
+    flash('Logged out!')
     return redirect(url_for('auth.login'))
 
 #TODO: for some reason this form is never valid.  We can trick it by
@@ -35,6 +35,8 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         print("LOGIN: Valid Form on Login Submit: ", form.validate_on_submit(), file=sys.stderr)
+        next = request.args.get('next')
+        print("1 POST NEXT: ", next, file=sys.stderr)
         # Grab the user from our User Models table
         name = form.name.data
         name = name.lower()
@@ -53,8 +55,10 @@ def login():
                 flash('Logged in successfully.')
                 # If a user was trying to visit a page that requires a login
                 # flask saves that URL as 'next'.  Check if that next exists,
-                # otherwise we'll go to the welcome page.
+                # otherwise we'll go to the welcome page. Next is not being captured
+                #in the request.
                 next = request.args.get('next')
+                print("2 POST NEXT: ", next, file=sys.stderr)
                 if next == None or not next[0]=='/':
                     next = url_for('vote.vote')
                 return redirect(next)
@@ -66,6 +70,8 @@ def login():
             return render_template('login.html', form=form)
 
     print("LOGIN:  Valid Form on login GET: ", form.validate_on_submit(), file=sys.stderr)
+    next = request.args.get('next')
+    print("GET NEXT: ", next, file=sys.stderr)
     return render_template('login.html', form=form)
 
 '''

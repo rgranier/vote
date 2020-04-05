@@ -83,7 +83,6 @@ def vote():
                         HELPER METHODS
 ============================================================
 '''
-# Foo
 def calculateRating():
     sql = '''select count(*) as total
     from votes

@@ -18,6 +18,7 @@ stats_blueprint = Blueprint('stats',
                               template_folder='templates/stats', static_folder='static')
 
 @stats_blueprint.route('/stats')
+@login_required
 def stats():
     data = []
     label = []
@@ -34,6 +35,7 @@ def stats():
     return render_template('stats.html', results = rows, label = label, data = data)
 
 @stats_blueprint.route('/stats/<int:memberId>')
+@login_required
 def countVotes(memberId):
     data = []
     label = []

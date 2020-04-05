@@ -22,7 +22,7 @@ db = SQLAlchemy(app)
 login_manager.init_app(app)
 
 # Tell users what view to go to when they need to login.
-login_manager.login_view = "login"
+login_manager.login_view = "auth.login"
 
 ''''
 NOTE! These imports need to come after you've defined db, otherwise you will
