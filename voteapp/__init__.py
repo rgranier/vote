@@ -29,6 +29,7 @@ NOTE! These imports need to come after you've defined db, otherwise you will
 get errors in your models.py files.
 NOTE:  1.  Import the blueprints defined in the Views
 '''
+from voteapp.main.views import main_blueprint
 from voteapp.auth.views import auth_blueprint
 from voteapp.vote.views import vote_blueprint
 from voteapp.stats.views import stats_blueprint
@@ -41,6 +42,7 @@ If the templates have the same name, then the first one registered will be
 the one that is found.
 https://stackoverflow.com/questions/7974771/flask-blueprint-template-folder
 '''
+app.register_blueprint(main_blueprint,url_prefix="/")
 app.register_blueprint(auth_blueprint,url_prefix="/auth")
 app.register_blueprint(vote_blueprint,url_prefix="/vote")
 app.register_blueprint(stats_blueprint,url_prefix="/stats")

@@ -6,14 +6,14 @@
 '''
 
 # Import database info
-from vote import db
-from vote.models import Member, Vote
+from voteapp import db
+from voteapp.models import Member, Vote
 
 # Create the tables in the database
 # (Usually won't do it this way!)
 db.create_all()
 
-defaultpw = 'password'
+defaultpw = 'L1n!M@nuel'
 
 users = ['joseph', 'hasan', 'helbongo', 'jim', 'joel', 'ming', 'randall', 'sujata',
         'arshad', 'mike', 'saji']
